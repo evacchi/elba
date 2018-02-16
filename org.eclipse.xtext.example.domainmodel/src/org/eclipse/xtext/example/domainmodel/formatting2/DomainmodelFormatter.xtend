@@ -32,31 +32,31 @@ class DomainmodelFormatter extends XbaseFormatter {
 		}
 	}
 
-	def dispatch void format(PackageDeclaration pkg, extension IFormattableDocument document) {
-		val open = pkg.regionFor.keyword("{")
-		val close = pkg.regionFor.keyword("}")
-		pkg.regionFor.feature(ABSTRACT_ELEMENT__NAME).surround[oneSpace]
-		open.append[newLine]
-		interior(open, close)[indent]
-		for (AbstractElement element : pkg.elements) {
-			element.format
-			element.append[setNewLines(1, 1, 2)]
-		}
-	}
-
-	def dispatch void format(Entity entity, extension IFormattableDocument document) {
-		val open = entity.regionFor.keyword("{")
-		val close = entity.regionFor.keyword("}")
-		entity.regionFor.feature(ABSTRACT_ELEMENT__NAME).surround[oneSpace]
-		entity.superType.surround[oneSpace]
-		open.append[newLine]
-		interior(open, close)[indent]
-		format(entity.getSuperType(), document);
-		for (Feature feature : entity.features) {
-			feature.format
-			feature.append[setNewLines(1, 1, 2)]
-		}
-	}
+//	def dispatch void format(PackageDeclaration pkg, extension IFormattableDocument document) {
+//		val open = pkg.regionFor.keyword("{")
+//		val close = pkg.regionFor.keyword("}")
+//		pkg.regionFor.feature(ABSTRACT_ELEMENT__NAME).surround[oneSpace]
+//		open.append[newLine]
+//		interior(open, close)[indent]
+//		for (AbstractElement element : pkg.elements) {
+//			element.format
+//			element.append[setNewLines(1, 1, 2)]
+//		}
+//	}
+//
+//	def dispatch void format(Entity entity, extension IFormattableDocument document) {
+//		val open = entity.regionFor.keyword("{")
+//		val close = entity.regionFor.keyword("}")
+//		entity.regionFor.feature(ABSTRACT_ELEMENT__NAME).surround[oneSpace]
+//		entity.superType.surround[oneSpace]
+//		open.append[newLine]
+//		interior(open, close)[indent]
+//		format(entity.getSuperType(), document);
+//		for (Feature feature : entity.features) {
+//			feature.format
+//			feature.append[setNewLines(1, 1, 2)]
+//		}
+//	}
 
 	def dispatch void format(Property property, extension IFormattableDocument document) {
 		property.regionFor.keyword(":").surround[noSpace]

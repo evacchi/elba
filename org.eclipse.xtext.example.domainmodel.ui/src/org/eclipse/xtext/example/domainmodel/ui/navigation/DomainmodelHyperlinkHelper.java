@@ -51,39 +51,39 @@ public class DomainmodelHyperlinkHelper extends TypeAwareHyperlinkHelper {
 	@Inject
 	private EObjectAtOffsetHelper eObjectAtOffsetHelper;
 	
-	@Override
-	public void createHyperlinksByOffset(XtextResource resource, int offset, IHyperlinkAcceptor acceptor) {
-		super.createHyperlinksByOffset(resource, offset, acceptor);
-		EObject eObject = eObjectAtOffsetHelper.resolveElementAt(resource, offset);
-		if (eObject instanceof Entity) {
-			List<INode> nodes = NodeModelUtils.findNodesForFeature(eObject, DomainmodelPackage.Literals.ABSTRACT_ELEMENT__NAME);
-			if (!nodes.isEmpty()) {
-				INode node = nodes.get(0);
-				if (node.getOffset() <= offset && node.getOffset() + node.getLength() > offset) {
-					String qualifiedJavaName = qualifiedNameConverter.toString(qualifiedNameProvider.getFullyQualifiedName(eObject));
-					if (resource.getResourceSet() instanceof XtextResourceSet) {
-						XtextResourceSet resourceSet = (XtextResourceSet) resource.getResourceSet();
-						Object uriContext = resourceSet.getClasspathURIContext();
-						if (uriContext instanceof IJavaProject) {
-							IJavaProject javaProject = (IJavaProject) uriContext;
-							try {
-								IType type = javaProject.findType(qualifiedJavaName);
-								if (type != null) {
-									JdtHyperlink hyperlink = jdtHyperlinkProvider.get();
-									hyperlink.setJavaElement(type);
-									hyperlink.setTypeLabel("Navigate to generated source code.");
-									hyperlink.setHyperlinkText("Go to type " + qualifiedJavaName);
-									hyperlink.setHyperlinkRegion(new Region(node.getOffset(), node.getLength()));
-									acceptor.accept(hyperlink);
-								}
-							} catch(JavaModelException e) {
-								logger.error(e.getMessage(), e);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
+//	@Override
+//	public void createHyperlinksByOffset(XtextResource resource, int offset, IHyperlinkAcceptor acceptor) {
+//		super.createHyperlinksByOffset(resource, offset, acceptor);
+//		EObject eObject = eObjectAtOffsetHelper.resolveElementAt(resource, offset);
+//		if (eObject instanceof Entity) {
+//			List<INode> nodes = NodeModelUtils.findNodesForFeature(eObject, DomainmodelPackage.Literals.ABSTRACT_ELEMENT__NAME);
+//			if (!nodes.isEmpty()) {
+//				INode node = nodes.get(0);
+//				if (node.getOffset() <= offset && node.getOffset() + node.getLength() > offset) {
+//					String qualifiedJavaName = qualifiedNameConverter.toString(qualifiedNameProvider.getFullyQualifiedName(eObject));
+//					if (resource.getResourceSet() instanceof XtextResourceSet) {
+//						XtextResourceSet resourceSet = (XtextResourceSet) resource.getResourceSet();
+//						Object uriContext = resourceSet.getClasspathURIContext();
+//						if (uriContext instanceof IJavaProject) {
+//							IJavaProject javaProject = (IJavaProject) uriContext;
+//							try {
+//								IType type = javaProject.findType(qualifiedJavaName);
+//								if (type != null) {
+//									JdtHyperlink hyperlink = jdtHyperlinkProvider.get();
+//									hyperlink.setJavaElement(type);
+//									hyperlink.setTypeLabel("Navigate to generated source code.");
+//									hyperlink.setHyperlinkText("Go to type " + qualifiedJavaName);
+//									hyperlink.setHyperlinkRegion(new Region(node.getOffset(), node.getLength()));
+//									acceptor.accept(hyperlink);
+//								}
+//							} catch(JavaModelException e) {
+//								logger.error(e.getMessage(), e);
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//	
 }

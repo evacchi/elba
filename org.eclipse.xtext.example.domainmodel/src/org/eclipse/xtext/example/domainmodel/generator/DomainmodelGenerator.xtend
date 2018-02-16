@@ -8,13 +8,28 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.example.domainmodel.domainmodel.TypeClass
+import org.eclipse.xtext.example.domainmodel.domainmodel.TypeClassMember
+import org.eclipse.xtext.common.types.JvmFormalParameter
+
+
+/* ***
+ * 
+ * 
+ * 
+ * THIS IS CURRENTLY NOT USED
+ * 
+ * */
 
 class DomainmodelGenerator extends AbstractGenerator {
 
 	@Inject extension IQualifiedNameProvider
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		for (e : resource.allContents.toIterable.filter(Entity)) {
+//		for (e : resource.allContents.toIterable.filter(Entity)) {
+//			fsa.generateFile(e.fullyQualifiedName.toString("/") + ".java", e.compile)
+//		}
+		for (e : resource.allContents.toIterable.filter(TypeClass)) {
 			fsa.generateFile(e.fullyQualifiedName.toString("/") + ".java", e.compile)
 		}
 	}
@@ -43,4 +58,24 @@ class DomainmodelGenerator extends AbstractGenerator {
 		    this.«f.name» = «f.name»;
 		}
 	'''
+	
+	def compile(TypeClass t) '''
+		«IF t.eContainer.fullyQualifiedName !== null»
+			package «t.eContainer.fullyQualifiedName»;
+		«ENDIF»
+		
+		public interface «t.name» {
+		    «FOR m : t.members»
+		    	«m.compile»
+		    «ENDFOR»
+		}
+	'''
+	
+	def compile(TypeClassMember m) '''
+		«m.type.toString» «FOR p : m.params»(«p.compile»)«ENDFOR»
+	'''
+	
+	def compile(JvmFormalParameter p) {
+		return p.toString
+	}
 }

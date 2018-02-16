@@ -23,7 +23,7 @@ PackageDeclaration:
 
 Entity:
 	'data' 'class' name=ValidID ('extends' superType=JvmParameterizedTypeReference)? '{'
-	features+=Feature*
+		features+=Feature*
 	'}';
 
 Feature:
@@ -33,7 +33,7 @@ Property:
 	type=JvmTypeReference name=ValidID;
 
 TypeClass:
-	'typeclass' name=QualifiedName '{'
+	'typeclass' name=ValidID '<' typeParameter=ValidID '>' '{'
 		members+=TypeClassMember*
 	'}'
 ;
@@ -44,7 +44,7 @@ TypeClassMember:
 ;
 
 TypeClassInstance:
-	'impl' typeClassName=[TypeClass] 'for' name=QualifiedName '{'
+	'typeclass' 'instance' name=QualifiedName 'for' typeClass=[TypeClass] '<' typeParameter=JvmTypeReference '>' '{'
 		members+=TypeClassInstanceMember
 	'}'
 ;
